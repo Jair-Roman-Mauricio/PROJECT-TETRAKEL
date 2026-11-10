@@ -640,7 +640,7 @@ Tras la aprobación de estas tareas, se propone comenzar **T001–T010 (fase 0)*
 
 ## Fase 13 — Editor visual y visor 3D
 
-- [ ] **T141 Separa borrador y distribución persistida.** Primero escribe y ejecuta su prueba en rojo. Crea estado de edición con revisión base, selección y descarte sin tocar caché guardada.
+- [x] **T141 Separa borrador y distribución persistida.** Primero escribe y ejecuta su prueba en rojo. Crea estado de edición con revisión base, selección y descarte sin tocar caché guardada.
   RF: RF-12, RF-18, RF-19, RF-116, RF-117, RNF-17 · Dep.: T137, T059, T129, T124 · Est.: 25 min.
   Hecho cuando: `pnpm run test:flows` pasa E-UI/editor-borrador al editar/descartar sin reemplazar la distribución persistida.
 

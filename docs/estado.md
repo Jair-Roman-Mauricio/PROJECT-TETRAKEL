@@ -5,7 +5,7 @@ Evidencia: [fase 0](evidencias/fase-00.md), [pnpm](cambios/001-pnpm-github.md),
 [fase 1](evidencias/fase-01.md), [fase 2](evidencias/fase-02.md) y
 [fases 3–4](evidencias/fase-03-04.md) y [fases 5–6](evidencias/fase-05-06.md) y [fases 7–8](evidencias/fase-07-08.md) y [fases 9–10](evidencias/fase-09-10.md) y [fases 11–12](evidencias/fase-11-12.md).
 
-## Implementado: T001–T140
+## Implementado: T001–T141
 
 - Workspace Next/Nest con TypeScript, runtime fijado y gestión exclusiva con pnpm.
 - PostgreSQL local separado para desarrollo/pruebas, roles distintos y 22
@@ -56,12 +56,14 @@ No se presenta este bloque como un WMS completo ni como una versión de producci
 
 | Tareas | Contenido |
 |---|---|
-| T141–T153 | Editor visual y visor 3D |
+| T142–T153 | Editor visual y visor 3D |
 | T154–T176 | Operaciones y reportes en pantalla |
 | T177–T182 | Landing, modalidades y demostración |
 | T183–T214 | Instalación, recuperación, mediciones y QA final |
 
-Siguiente tarea: **T141 — borrador de distribución separado de la caché**, no iniciada.
+Siguiente tarea: **T142 — árbol y altas de elementos**, no iniciada.
+T141 (borrador de distribución separado de la caché) quedó completa con pruebas
+unitarias y de navegador.
 La equivalencia operativa completa SaaS/local, restauración y mediciones del perfil
 grande aún requieren sus pruebas posteriores.
 
