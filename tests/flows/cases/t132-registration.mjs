@@ -9,8 +9,19 @@ export default async function (page, env, h) {
     "Correo electrónico": "registro@example.test",
     Contraseña: "RegistroPassword!2026",
   };
-  for (const [label, value] of Object.entries(values))
-    await page.getByLabel(new RegExp("^" + label)).fill(value);
+  for (const [label, value] of Object.entries(values)) {
+    if (label === "Zona horaria") {
+      await page.getByLabel(/^Zona horaria/).click();
+      await page.getByRole("dialog", { name: "Zona horaria" }).waitFor();
+      await page.getByLabel("Buscar zona horaria").fill(value);
+      await page.getByRole("option", { name: new RegExp("^" + value) }).click();
+      await page.getByRole("dialog").waitFor({ state: "detached" });
+      h.assert(
+        (await page.getByLabel(/^Zona horaria/).inputValue()) === value,
+        "El selector no aplicó la zona elegida.",
+      );
+    } else await page.getByLabel(new RegExp("^" + label)).fill(value);
+  }
   await page
     .getByRole("button", { name: "Crear empresa", exact: true })
     .click();

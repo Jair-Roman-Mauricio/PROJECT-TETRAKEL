@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { PendingOperationsNotice } from "./pending-operations";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import {
-  CubeIcon,
   ListIcon,
   PackageIcon,
   WarehouseIcon,
@@ -48,10 +48,14 @@ function Navigation({ onNavigate }: { onNavigate?: () => void }) {
 function Brand() {
   return (
     <Link className="brand" href="/app">
-      <CubeIcon size={28} weight="fill" aria-hidden="true" />
-      <span>
-        Almacén <strong>3D</strong>
-      </span>
+      <Image
+            className="brand-logo"
+            src="/brand/logo-horizontal.png"
+            alt="Almacén 3D"
+            width={755}
+            height={160}
+            priority
+          />
     </Link>
   );
 }

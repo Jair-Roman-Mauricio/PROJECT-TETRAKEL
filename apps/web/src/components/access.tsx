@@ -2,16 +2,18 @@
 import { FormSummary } from "./form-summary";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
-import { CubeIcon } from "@phosphor-icons/react";
+import Image from "next/image";
 import type { PublicConfig, Session } from "@almacen/contracts";
 import { Button, Field } from "@almacen/ui";
 import { accessSchema } from "../lib/form-schemas";
 import { errorMessage, request } from "../lib/api";
 import { useSession } from "./session";
+import { AuthVisual } from "./auth-visual";
+import { useAuthShellSlot } from "./auth-shell-context";
 export function usePublicConfig() {
   return useQuery({
     queryKey: ["public-config"],
@@ -32,27 +34,43 @@ export function AuthFrame({
   children: ReactNode;
   wide?: boolean;
 }) {
+  const slot = useAuthShellSlot(),
+    panel = useRef<HTMLElement>(null);
+  useEffect(() => {
+    slot?.setMeta({ title, description });
+  }, [slot, title, description]);
+  useEffect(() => {
+    // One continuous sequence across the whole form, whatever its sections.
+    panel.current
+      ?.querySelectorAll<HTMLElement>(".field .control")
+      .forEach((control, index) =>
+        control.style.setProperty("--i", String(index)),
+      );
+  }, []);
+  // Inside the persistent shell only the form is rendered; the frame is shared.
+  if (slot) return <>{children}</>;
   return (
-    <div className="auth-page">
-      <header className="auth-header">
+    <div className="auth-split">
+      <div className="auth-main">
         <Link className="brand" href="/acceso">
-          <CubeIcon size={28} weight="fill" aria-hidden="true" />
-          <span>
-            Almacén <strong>3D</strong>
-          </span>
+          <Image
+            className="brand-logo"
+            src="/brand/logo-horizontal.png"
+            alt="Almacén 3D"
+            width={755}
+            height={160}
+            priority
+          />
         </Link>
-        <span className="muted">Gestión de almacenes</span>
-      </header>
-      <main className={"auth-panel" + (wide ? " wide" : "")}>
-        <div className="auth-heading">
-          <h1>{title}</h1>
-          <p className="muted">{description}</p>
-        </div>
-        {children}
-      </main>
-      <footer className="auth-footer">
-        Tu empresa, tu inventario, tu espacio de trabajo.
-      </footer>
+        <main ref={panel} className={"auth-panel" + (wide ? " wide" : "")}>
+          <div className="auth-heading">
+            <h1>{title}</h1>
+            <p className="muted">{description}</p>
+          </div>
+          {children}
+        </main>
+      </div>
+      <AuthVisual />
     </div>
   );
 }
@@ -144,11 +162,6 @@ export function Access() {
           </p>
         ) : config.data?.localSetupRequired ? (
           <Link href="/configuracion-inicial">Configurar esta instalación</Link>
-        ) : null}
-        {config.data?.demoMode ? (
-          <p className="demo-note">
-            Entorno de demostración con datos ficticios.
-          </p>
         ) : null}
         {config.isError ? (
           <p role="alert">

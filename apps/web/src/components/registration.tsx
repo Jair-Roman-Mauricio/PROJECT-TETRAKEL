@@ -1,7 +1,8 @@
 "use client";
 import { FormSummary } from "./form-summary";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Field, QueryStatus } from "@almacen/ui";
@@ -9,8 +10,18 @@ import { registrationFormSchema } from "../lib/form-schemas";
 import { applyFieldError } from "../lib/form-errors";
 import { ApiError, errorMessage, request } from "../lib/api";
 import { AuthFrame, usePublicConfig } from "./access";
+import { HoloZoneField } from "./holo-zone-field";
+// When the service mode cannot be checked, the person is not left on a form
+// that cannot work: they are sent to the sign-in page.
+function useLeaveOnFailure(failed: boolean) {
+  const router = useRouter();
+  useEffect(() => {
+    if (failed) router.replace("/acceso");
+  }, [failed, router]);
+}
 export function Registration() {
   const config = usePublicConfig();
+  useLeaveOnFailure(config.isError);
   if (config.isPending)
     return (
       <AuthFrame
@@ -165,10 +176,17 @@ export function RegistrationForm({ local = false }: { local?: boolean }) {
             error={errors.companyCode?.message}
             hint="Identificador de acceso. Hasta 64 letras, números, guion, punto o barra."
           />
-          <Field
+          <HoloZoneField
             label="Zona horaria"
-            required
-            {...form.register("timeZone")}
+            registration={form.register("timeZone")}
+            value={form.watch("timeZone")}
+            onPick={(zone) =>
+              form.setValue("timeZone", zone, {
+                shouldDirty: true,
+                shouldTouch: true,
+                shouldValidate: true,
+              })
+            }
             error={errors.timeZone?.message}
             hint="Nombre IANA, por ejemplo America/Lima."
           />
@@ -212,7 +230,9 @@ export function RegistrationForm({ local = false }: { local?: boolean }) {
               ? "Configurar instalación"
               : "Crear empresa"}
         </Button>
-        <Link href="/acceso">Ya tengo una cuenta</Link>
+        <p className="auth-links">
+          ¿Ya tienes una cuenta? <Link href="/acceso">Inicia sesión</Link>
+        </p>
       </form>
     </AuthFrame>
   );
@@ -220,6 +240,7 @@ export function RegistrationForm({ local = false }: { local?: boolean }) {
 
 export function LocalSetup() {
   const config = usePublicConfig();
+  useLeaveOnFailure(config.isError);
   if (config.isPending)
     return (
       <AuthFrame

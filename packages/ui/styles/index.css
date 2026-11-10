@@ -6,6 +6,7 @@ html {
   font-family: var(--font-ui);
   color: var(--ink);
   background: var(--canvas);
+  text-wrap: pretty;
   -webkit-tap-highlight-color: transparent;
 }
 body {
@@ -15,8 +16,8 @@ body {
   line-height: 1.55;
 }
 ::selection {
-  background: #cfe0ff;
-  color: #172b4d;
+  background: rgb(52 211 153 / 35%);
+  color: #ffffff;
 }
 :focus-visible {
   outline: 3px solid var(--accent);
@@ -54,16 +55,18 @@ p {
   margin-top: 0;
 }
 h1 {
-  font-size: 30px;
-  line-height: 1.2;
-  font-weight: 650;
-  letter-spacing: -0.025em;
+  font-family: var(--font-display);
+  font-size: 34px;
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.035em;
 }
 h2 {
-  font-size: 19px;
-  line-height: 1.35;
-  font-weight: 650;
-  letter-spacing: -0.015em;
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 1.3;
+  font-weight: 500;
+  letter-spacing: -0.02em;
 }
 h3 {
   font-size: 16px;
@@ -97,39 +100,60 @@ p {
   min-height: 40px;
   padding: 9px 16px;
   border: 1px solid transparent;
-  border-radius: var(--radius-control);
+  border-radius: var(--radius-pill);
   font-weight: 650;
   text-decoration: none;
   white-space: nowrap;
-  background: var(--accent);
-  color: white;
+  background-color: var(--accent);
+  background-image: linear-gradient(180deg, #8af5cb, var(--accent));
+  color: var(--accent-ink);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 25%) inset,
+    0 6px 26px -6px var(--accent-glow);
+  transition:
+    transform 160ms var(--ease-out),
+    box-shadow 200ms var(--ease-out),
+    background-color 160ms var(--ease-out);
+}
+.button:active:not(:disabled) {
+  transform: scale(0.97);
 }
 .button.secondary {
-  background: var(--surface);
+  background: rgb(255 255 255 / 4%);
   color: var(--ink);
-  border-color: var(--line);
+  border-color: var(--line-strong);
+  box-shadow: none;
 }
 .button.danger {
-  background: var(--danger);
-  color: white;
+  background: var(--danger-soft);
+  color: var(--danger);
+  border-color: rgb(255 99 77 / 40%);
+  box-shadow: none;
 }
 .button.ghost {
   background: transparent;
   color: var(--muted);
+  box-shadow: none;
 }
 .button:disabled {
-  background: #e7edf6;
-  color: var(--muted);
+  background: rgb(255 255 255 / 6%);
+  color: var(--placeholder);
+  box-shadow: none;
 }
 @media (hover: hover) and (pointer: fine) {
   .button:hover:not(:disabled) {
-    background: var(--accent-hover);
-    color: white;
+    background-color: var(--accent-hover);
+    background-image: linear-gradient(180deg, #b7fbe0, var(--accent-hover));
+    color: var(--accent-ink);
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 35%) inset,
+      0 8px 34px -4px var(--accent-glow);
   }
   .button.secondary:hover:not(:disabled),
   .button.ghost:hover:not(:disabled) {
     background: var(--accent-soft);
     color: var(--accent-hover);
+    box-shadow: none;
   }
 }
 @media (pointer: coarse) {
@@ -165,10 +189,23 @@ p {
   width: 100%;
   min-height: 42px;
   padding: 10px 12px;
-  border: 1px solid #aab6c8;
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-control);
-  background: var(--surface);
+  background: rgb(255 255 255 / 3%);
+  transition:
+    border-color 160ms var(--ease-out),
+    background-color 160ms var(--ease-out),
+    box-shadow 160ms var(--ease-out);
   color: var(--ink);
+}
+.control:hover {
+  border-color: #3b4f63;
+}
+.control:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  background: rgb(52 211 153 / 5%);
+  box-shadow: 0 0 0 4px rgb(52 211 153 / 16%);
 }
 .control::placeholder {
   color: var(--placeholder);
@@ -213,7 +250,8 @@ p {
 .dialog-overlay {
   position: fixed;
   inset: 0;
-  background: rgb(23 43 77 / 32%);
+  background: rgb(2 4 8 / 72%);
+  backdrop-filter: blur(6px);
   z-index: var(--layer-overlay);
 }
 .dialog-content {
@@ -224,8 +262,8 @@ p {
   width: min(480px, calc(100vw - 32px));
   max-height: calc(100dvh - 48px);
   overflow: auto;
-  padding: 24px;
-  background: var(--surface);
+  padding: 28px;
+  background: linear-gradient(180deg, var(--surface-raised), var(--surface));
   border-radius: var(--radius-panel);
   box-shadow: var(--shadow-overlay);
   z-index: var(--layer-dialog);
@@ -254,14 +292,15 @@ p {
   min-width: 200px;
   max-width: calc(100vw - 24px);
   padding: 6px;
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: var(--surface-raised);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-control);
+  box-shadow: 0 16px 48px rgb(0 0 0 / 50%);
   z-index: var(--layer-dialog);
 }
 .menu-item {
   padding: 9px 12px;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   outline: none;
 }
@@ -294,16 +333,18 @@ html[data-input="keyboard"] .dialog-content {
 .data-table th {
   text-align: left;
   font-weight: 600;
-  font-size: 12px;
   color: var(--muted);
-  background: var(--rail);
+  background: rgb(255 255 255 / 3%);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 11px;
   padding: 13px 18px;
   border-bottom: 1px solid var(--line);
   white-space: nowrap;
 }
 .data-table td {
   padding: 17px 18px;
-  border-bottom: 1px solid #edf0f5;
+  border-bottom: 1px solid var(--line);
   vertical-align: middle;
   overflow-wrap: anywhere;
 }
@@ -333,8 +374,8 @@ html[data-input="keyboard"] .dialog-content {
 }
 .skeleton span {
   height: 14px;
-  background: #e7edf6;
-  border-radius: 4px;
+  background: linear-gradient(90deg, #121b25, #1a2633, #121b25);
+  border-radius: 6px;
 }
 .skeleton span:last-child {
   width: 65%;

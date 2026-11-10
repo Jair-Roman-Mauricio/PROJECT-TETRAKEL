@@ -53,7 +53,20 @@ export default async function (page, env, h) {
       "Correo electrónico": "local@example.test",
       Contraseña: "LocalPassword!2026",
     };
+    const choose = async (target, value) => {
+      await target.getByLabel(/^Zona horaria/).click();
+      await target.getByLabel("Buscar zona horaria").fill(value);
+      await target
+        .getByRole("option", { name: new RegExp("^" + value) })
+        .click();
+      await target.getByRole("dialog").waitFor({ state: "detached" });
+    };
     for (const [label, value] of Object.entries(values)) {
+      if (label === "Zona horaria") {
+        await choose(page, value);
+        await choose(other, value);
+        continue;
+      }
       await page.getByLabel(new RegExp("^" + label)).fill(value);
       await other
         .getByLabel(new RegExp("^" + label))
