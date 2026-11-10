@@ -1,7 +1,7 @@
 "use client";
 import { FormSummary } from "./form-summary";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +18,72 @@ function useLeaveOnFailure(failed: boolean) {
   useEffect(() => {
     if (failed) router.replace("/acceso");
   }, [failed, router]);
+}
+function CopyCode({ code }: { code: string }) {
+  const [copied, setCopied] = useState<"idle" | "copied" | "failed">("idle"),
+    timer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+  async function copy() {
+    let ok: boolean;
+    try {
+      await navigator.clipboard.writeText(code);
+      ok = true;
+    } catch {
+      // Older or non-secure contexts: fall back to a temporary selection.
+      const field = document.createElement("textarea");
+      field.value = code;
+      field.setAttribute("readonly", "");
+      field.style.position = "fixed";
+      field.style.opacity = "0";
+      document.body.appendChild(field);
+      field.select();
+      try {
+        ok = document.execCommand("copy");
+      } catch {
+        ok = false;
+      }
+      field.remove();
+    }
+    setCopied(ok ? "copied" : "failed");
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setCopied("idle"), 2200);
+  }
+  return (
+    <>
+      <button
+        type="button"
+        className="copy-code"
+        data-state={copied}
+        aria-label="Copiar código"
+        onClick={() => void copy()}
+      >
+        {copied === "copied" ? (
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12.5l4.5 4.5L19 7.5" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="9" y="9" width="11" height="11" rx="3" />
+            <path d="M15 9V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v5a3 3 0 0 0 3 3h2" />
+          </svg>
+        )}
+        <span className="copy-code-tip" aria-hidden="true">
+          {copied === "copied"
+            ? "Copiado"
+            : copied === "failed"
+              ? "No se pudo copiar"
+              : "Copiar"}
+        </span>
+      </button>
+      <span className="visually-hidden" role="status">
+        {copied === "copied"
+          ? "Código copiado"
+          : copied === "failed"
+            ? "No se pudo copiar el código"
+            : ""}
+      </span>
+    </>
+  );
 }
 export function Registration() {
   const config = usePublicConfig();
@@ -129,12 +195,12 @@ export function RegistrationForm({ local = false }: { local?: boolean }) {
         title={local ? "Instalación configurada" : "Empresa creada"}
         description="Guarda este código: tu equipo lo usará para iniciar sesión."
       >
-        <p className="confirmed-code">
-          <strong>{result}</strong>
-        </p>
-        <p className="muted">
-          El primer administrador ya puede acceder con su correo y contraseña.
-        </p>
+        <div className="code-row">
+          <p className="confirmed-code">
+            <strong>{result}</strong>
+          </p>
+          <CopyCode code={result} />
+        </div>
         <Link
           className="button"
           href={"/acceso?empresa=" + encodeURIComponent(result)}
