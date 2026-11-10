@@ -1,4 +1,4 @@
-# Almacén 3D
+# Tetrakel
 
 Sistema de gestión de almacenes (WMS) en desarrollo para empresas con almacenes de mediano y gran tamaño. El proyecto contempla inventario trazable y un editor configurable de zonas, pasillos, racks, niveles y ubicaciones, con visualización 3D.
 

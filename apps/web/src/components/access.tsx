@@ -56,8 +56,8 @@ export function AuthFrame({
           <Image
             className="brand-logo"
             src="/brand/logo-horizontal.png"
-            alt="Almacén 3D"
-            width={755}
+            alt="Tetrakel"
+            width={756}
             height={160}
             priority
           />

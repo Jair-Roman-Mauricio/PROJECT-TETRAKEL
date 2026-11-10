@@ -1,4 +1,4 @@
-# Instrucciones para trabajar en Almacén 3D
+# Instrucciones para trabajar en Tetrakel
 
 ## Base del proyecto
 

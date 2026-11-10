@@ -1,4 +1,4 @@
-# Almacén 3D
+# Tetrakel
 
 <!-- impeccable:product-schema 1 -->
 
@@ -41,7 +41,7 @@ stock optimista, pasarela de pago ni servicios externos obligatorios.
 
 ## Brand Commitments
 
-Nombre Almacén 3D. Español claro y vocabulario operativo. Cada módulo visual y
+Nombre Tetrakel. Español claro y vocabulario operativo. Cada módulo visual y
 la landing consultan awwwards-inspiration y registran decisiones originales.
 NotebookLM está retirado. No existe diseño Figma aportado ni logotipo previo.
 

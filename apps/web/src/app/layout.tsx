@@ -4,7 +4,7 @@ import { QueryScope } from "../components/query-scope";
 import { SessionProvider } from "../components/session";
 import { InputModality } from "../components/input-modality";
 export const metadata: Metadata = {
-  title: { default: "Almacén 3D", template: "%s | Almacén 3D" },
+  title: { default: "Tetrakel", template: "%s | Tetrakel" },
   description: "Gestión de inventario y almacenes",
   robots: { index: false, follow: false },
 };

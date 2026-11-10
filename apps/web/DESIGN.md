@@ -1,5 +1,5 @@
 ---
-name: "Almacén 3D"
+name: "Tetrakel"
 description: "Operación clara, contexto explícito y cantidades exactas."
 colors:
   surface: "#ffffff"
@@ -119,13 +119,13 @@ components:
     width: "min(480px, calc(100vw - 32px))"
 ---
 
-# Design System: Almacén 3D
+# Design System: Tetrakel
 
 ## Overview
 
 **Creative North Star: "SaaS familiar, contexto siempre visible"**
 
-Almacén 3D combina área de trabajo blanca, rail neutro frío y azul para acciones y selección. El canon de acabado acordado toma la jerarquía compacta de Linear y los formularios y ajustes de GitHub; los tokens y componentes son propios, sobre Radix y Tailwind. El usuario eligió la familiaridad y autorizó código directo, sin una composición de imagen aprobada.
+Tetrakel combina área de trabajo blanca, rail neutro frío y azul para acciones y selección. El canon de acabado acordado toma la jerarquía compacta de Linear y los formularios y ajustes de GitHub; los tokens y componentes son propios, sobre Radix y Tailwind. El usuario eligió la familiaridad y autorizó código directo, sin una composición de imagen aprobada.
 
 La densidad permite encontrar productos, reconocer empresa y almacén y leer cantidades confirmadas. Este sistema registra acceso, registro SaaS, configuración inicial local, empresa, equipo, almacenes, catálogo e inventario en lista (T119–T140). No documenta un editor/visor 3D ni una landing implementados: comienzan en T141 y T177, respectivamente.
 
